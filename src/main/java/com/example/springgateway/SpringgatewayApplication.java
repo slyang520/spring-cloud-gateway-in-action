@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.time.Duration;
+
 @SpringBootApplication
 @RestController
 public class SpringgatewayApplication {
@@ -38,16 +40,24 @@ public class SpringgatewayApplication {
                         .filters(f -> f.addRequestHeader("Hello", "World"))
                         .uri("http://httpbin.org:80"))
 
-
                 //   路径重写
                 //   >>> http://localhost:8080/xxapi/get
                 //   <<< http://httpbin.org:80/get
+                //   等价于 f.stripPrefix(1) //忽略第一段 /xxapi/get  /get
                 .route(p -> p
                         .path("/xxapi/**")
                         .filters(f -> f.rewritePath("/xxapi/(?<segment>.*)","/${segment}"))
                         .uri("http://httpbin.org"))
 
-                
+                // 限流
+                // curl http://localhost:8080/request/rateLimit
+                .route(p -> p
+                        .path("/request/**")
+                        .filters(f ->
+                                        f.stripPrefix(1).filter(new RateLimitByIpGatewayFilter(10,1,Duration.ofSeconds(1)))
+                                )
+                        .uri("http://localhost:8080"))
+
                 // 配合 HystrixCommand   hystrix 演示网关超时
                 // curl --dump-header - --header 'Host: www.hystrix.com' http://localhost:8080/delay/3
                 .route(p -> p
@@ -64,10 +74,13 @@ public class SpringgatewayApplication {
 
     @GetMapping("/fallback")
     public Mono<String> fallback() {
-
         System.out.println("fdfa");
-        
         return Mono.just("\nI AM  fallback\n");
+    }
+
+    @GetMapping("/rateLimit")
+    public Mono<String> rateLimitTest() {
+        return Mono.just("\nrateLimit \n");
     }
 
 
