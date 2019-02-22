@@ -34,7 +34,7 @@ Easy to write Predicates and Filters
 
 Request Rate Limiting
 ```
-请求速率限制
+请求速率限制✔️
 
 ```
 
