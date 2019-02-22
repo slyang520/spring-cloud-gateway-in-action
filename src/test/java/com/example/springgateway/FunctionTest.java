@@ -3,6 +3,7 @@ package com.example.springgateway;
 import org.junit.Test;
 
 import java.util.function.IntFunction;
+import java.util.function.Predicate;
 
 public class FunctionTest {
 
@@ -25,6 +26,17 @@ public class FunctionTest {
         // out   >     /get
         System.out.println(newPath);
     }
+
+    @Test
+    public void predicateTest() {
+        // Predicate
+        // 条件测试接口
+        Predicate predicate;
+
+    }
+
+
+
 
 
 }

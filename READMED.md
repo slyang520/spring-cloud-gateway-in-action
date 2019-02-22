@@ -2,10 +2,16 @@
 
 Able to match routes on any request attribute.
 ```
-    能够在任何请求属性上匹配路由。
+    动态路由
 ```
 
 Predicates and filters are specific to routes.
+
+```
+ Predicates 和 Filters 作用于特定路由
+
+```
+
 
 Hystrix Circuit Breaker integration.
 ```
@@ -22,7 +28,7 @@ Spring Cloud DiscoveryClient integration
 Easy to write Predicates and Filters
 
 ```
-  易于编写断言和过滤器
+  易于编写的 Predicates 和 Filters
 
 ```
 

@@ -46,7 +46,7 @@ public class RateLimitByIpGatewayFilter implements GatewayFilter, Ordered {
         String ip = exchange.getRequest().getRemoteAddress().getAddress().getHostAddress();
         Bucket bucket = CACHE.computeIfAbsent(ip,k -> createNewBucket());
 
-        logger.debug("IP: " + ip + ",TokenBucket Available Tokens: " + bucket.getAvailableTokens());
+        logger.info("IP: " + ip + ",TokenBucket Available Tokens: " + bucket.getAvailableTokens());
         if (bucket.tryConsume(1)) {
             return chain.filter(exchange);
         } else {
