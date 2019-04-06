@@ -25,7 +25,14 @@ public class SpringgatewayApplication {
 //    Filter（过滤器）：这是org.springframework.cloud.gateway.filter.GatewayFilter的实例，
 //                      我们可以使用它修改请求和响应。
 //
-
+//
+//
+//
+//    id：固定，不同 id 对应不同的功能，可参考 官方文档
+//    uri：目标服务地址
+//    predicates：路由条件
+//    filters：过滤规则
+//
 
     public static void main(String[] args) {
         SpringApplication.run(SpringgatewayApplication.class, args);
@@ -35,9 +42,9 @@ public class SpringgatewayApplication {
     public RouteLocator myRoutes(RouteLocatorBuilder builder) {
         return builder.routes()
 
-                //   添加请求头
-                //   >>> http://localhost:8080/get
-                //   <<< http://httpbin.org:80/get
+                 //   添加请求头
+                 //   >>> http://localhost:8080/get
+                 //   <<< http://httpbin.org:80/get
                 .route(p -> p
                         .path("/get")
                         .filters(f -> f.addRequestHeader("Hello", "World"))
@@ -51,6 +58,21 @@ public class SpringgatewayApplication {
                         .path("/xxapi/**")
                         .filters(f -> f.rewritePath("/xxapi/(?<segment>.*)","/${segment}"))
                         .uri("http://httpbin.org"))
+
+
+                // curl 127.0.0.1:8080/weighttest/1
+                // 权重测试
+                .route("id_360",p -> p
+                        .path("/weighttest/**")
+                        .and()
+                        .weight("service1",1)
+                        .uri("http://360.com"))
+                .route("id_baidu",p -> p
+                        .path("/weighttest/**")
+                        .and()
+                        .weight("service1",1)
+                        .uri("http://baidu.com"))
+
 
                 // 限流
                 // curl http://localhost:8080/request/rateLimit
@@ -86,5 +108,12 @@ public class SpringgatewayApplication {
         return Mono.just("\nrateLimit \n");
     }
 
-
+//    @Autowired
+//    RouteDefinitionLocator routeDefinitionLocator;
+//
+////    http://localhost:8080/actuator/gateway/routes
+//    @GetMapping("/router/profile")
+//    public Flux<RouteDefinition> routerProfile(  ) {
+//        return routeDefinitionLocator.getRouteDefinitions();
+//    }
 }
