@@ -2,6 +2,7 @@ package com.example.springgateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.gateway.config.GatewayAutoConfiguration;
 import org.springframework.cloud.gateway.route.RouteLocator;
 import org.springframework.cloud.gateway.route.builder.RouteLocatorBuilder;
 import org.springframework.context.annotation.Bean;
@@ -32,7 +33,7 @@ public class SpringgatewayApplication {
 //    uri：目标服务地址
 //    predicates：路由条件
 //    filters：过滤规则
-//
+//    https://windmt.com/2019/01/20/spring-cloud-20-gateway-dynamic-routing/
 
     public static void main(String[] args) {
         SpringApplication.run(SpringgatewayApplication.class, args);
